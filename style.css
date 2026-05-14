@@ -1,0 +1,910 @@
+/* ================================================================
+   STYLE.CSS — SmartPrompt Studio
+   Read the comments above each section to understand what it does.
+   Build this file top to bottom — each section depends on the one above.
+================================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. CSS VARIABLES (Custom Properties)
+   These are like "variables" in programming.
+   Define a color once here, use it everywhere.
+   To change your whole color scheme — just edit this block!
+---------------------------------------------------------------- */
+:root {
+  --bg:        #0a0a0f;          /* Main background — very dark navy */
+  --surface:   #111118;          /* Slightly lighter surface for sections */
+  --surface2:  #1a1a26;          /* Even lighter — used inside cards/inputs */
+  --border:    rgba(255,255,255,0.07); /* Subtle white border */
+  --accent:    #7c6aff;          /* Primary purple accent */
+  --accent2:   #ff6a9d;          /* Pink accent */
+  --accent3:   #6affd4;          /* Mint/teal accent */
+  --text:      #e8e8f0;          /* Main text color */
+  --muted:     #7070a0;          /* Secondary / dimmed text */
+  --glow:      rgba(124,106,255,0.25); /* Purple glow for shadows */
+  --radius:    14px;             /* Default border-radius for cards */
+}
+
+
+/* ----------------------------------------------------------------
+   2. RESET & BASE STYLES
+   Remove default browser spacing, set box model.
+   This ensures every browser renders your site consistently.
+---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box; /* padding/border included in element width */
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* enables smooth scrolling when clicking nav links */
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden; /* prevents horizontal scrollbar */
+}
+
+
+/* ----------------------------------------------------------------
+   3. LIGHT MODE
+   When the user clicks the theme toggle button,
+   JavaScript adds the class "light-mode" to <body>.
+   These variables override the dark ones above.
+---------------------------------------------------------------- */
+body.light-mode {
+  --bg:       #f4f3ff;
+  --surface:  #eae8ff;
+  --surface2: #dddaff;
+  --border:   rgba(0,0,0,0.09);
+  --text:     #1a1a2e;
+  --muted:    #6060a0;
+}
+
+
+/* ----------------------------------------------------------------
+   4. REUSABLE UTILITY CLASSES
+   Classes you'll use in multiple sections.
+---------------------------------------------------------------- */
+
+/* Centers content and limits max width */
+.container {
+  max-width: 1100px;
+  margin: 0 auto; /* centers horizontally */
+}
+
+/* Small monospace label above section headings */
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+/* Large bold section heading */
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem); /* clamp = responsive font size */
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+/* Subtitle paragraph under section title */
+.section-sub {
+  color: var(--muted);
+  max-width: 520px;
+  font-size: 1rem;
+}
+
+/* Purple-to-pink gradient text effect */
+.gradient-text {
+  background: linear-gradient(120deg, var(--accent) 20%, var(--accent2) 60%, var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* ----------------------------------------------------------------
+   5. SCROLL REVEAL ANIMATION
+   Elements start invisible and slide up.
+   JavaScript adds the "visible" class when they enter the screen.
+---------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ----------------------------------------------------------------
+   6. NAVBAR
+   Fixed to top, semi-transparent with blur effect.
+   Uses flexbox to space logo, links, and buttons.
+---------------------------------------------------------------- */
+nav {
+  position: fixed;       /* stays at top while scrolling */
+  top: 0; left: 0; right: 0;
+  z-index: 100;          /* appears above everything else */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* logo | links | buttons */
+  padding: 1.1rem 3rem;
+  background: rgba(10, 10, 15, 0.7); /* semi-transparent dark */
+  backdrop-filter: blur(20px);        /* frosted glass effect */
+  border-bottom: 1px solid var(--border);
+}
+
+/* Logo text */
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(120deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* The "studio" part of the logo in a different style */
+.logo span {
+  font-family: 'DM Mono', monospace;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.85rem;
+}
+
+/* Remove bullet points from nav list */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+/* Nav link styling */
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+/* Right side of nav: toggle + cta button */
+.nav-right {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+/* Theme toggle button */
+#themeToggle {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.4rem 1rem;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: 'DM Mono', monospace;
+  transition: border-color 0.2s;
+}
+
+#themeToggle:hover {
+  border-color: var(--accent);
+}
+
+/* Purple CTA button in nav */
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.55rem 1.3rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.nav-cta:hover {
+  opacity: 0.85;
+  box-shadow: 0 0 20px var(--glow);
+}
+
+
+/* ----------------------------------------------------------------
+   7. HERO SECTION
+   Full screen height, centered content, floating orbs.
+---------------------------------------------------------------- */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;  /* stack children vertically */
+  align-items: center;     /* center horizontally */
+  justify-content: center; /* center vertically */
+  text-align: center;
+  padding: 8rem 2rem 5rem; /* top padding so content is below navbar */
+  position: relative;      /* needed for orbs to position inside */
+}
+
+/* Decorative blurred circle blobs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none; /* can't click on them */
+}
+
+.orb1 {
+  width: 500px; height: 500px;
+  background: rgba(124, 106, 255, 0.18);
+  top: 10%; left: 10%;
+  animation: drift 8s ease-in-out infinite alternate;
+}
+
+.orb2 {
+  width: 350px; height: 350px;
+  background: rgba(255, 106, 157, 0.14);
+  bottom: 15%; right: 8%;
+  animation: drift 10s ease-in-out infinite alternate-reverse;
+}
+
+.orb3 {
+  width: 250px; height: 250px;
+  background: rgba(106, 255, 212, 0.1);
+  top: 50%; left: 50%;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+
+/* Slow floating animation for orbs */
+@keyframes drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(30px, 20px); }
+}
+
+/* Small pill label at the top of hero */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(124, 106, 255, 0.12);
+  border: 1px solid rgba(124, 106, 255, 0.3);
+  color: var(--accent);
+  padding: 0.35rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease both;
+}
+
+/* Hero main heading */
+#hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+
+/* Hero subtitle */
+.hero-sub {
+  margin-top: 1.5rem;
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  font-weight: 300;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+/* Row of hero buttons */
+.hero-btns {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+/* Primary solid button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #9a8bff);
+  color: #fff;
+  border: none;
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 30px rgba(124, 106, 255, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(124, 106, 255, 0.5);
+}
+
+/* Secondary outline button */
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  background: rgba(124, 106, 255, 0.08);
+}
+
+/* Stats row in hero */
+.hero-stats {
+  margin-top: 4rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.stat { text-align: center; }
+
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(120deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Fade up animation used by hero elements */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ----------------------------------------------------------------
+   8. HOW IT WORKS SECTION
+---------------------------------------------------------------- */
+#how {
+  background: var(--surface);
+  padding: 6rem 2rem;
+}
+
+/* 4 column grid (auto-fit means it collapses to fewer columns on small screens) */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+
+/* Individual step card */
+.step-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.step-card:hover {
+  border-color: rgba(124, 106, 255, 0.4);
+  transform: translateY(-4px);
+}
+
+/* Colored top border appears on hover */
+.step-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.step-card:hover::before {
+  opacity: 1;
+}
+
+/* Large faded number */
+.step-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: rgba(124, 106, 255, 0.15);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.step-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+
+.step-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.step-card p { color: var(--muted); font-size: 0.9rem; }
+
+
+/* ----------------------------------------------------------------
+   9. PROMPT BUILDER SECTION
+---------------------------------------------------------------- */
+#builder {
+  background: var(--bg);
+  padding: 6rem 2rem;
+}
+
+/* Two-column layout for builder */
+.builder-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+/* On small screens, stack into single column */
+@media (max-width: 750px) {
+  .builder-wrap { grid-template-columns: 1fr; }
+}
+
+/* White box panels */
+.builder-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+
+.builder-panel h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Spacing between each form element */
+.form-group { margin-bottom: 1.2rem; }
+
+/* Small label above inputs */
+label {
+  display: block;
+  font-size: 0.8rem;
+  font-family: 'DM Mono', monospace;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+/* Dropdown and textarea shared styles */
+select, textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.7rem 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+  appearance: none; /* removes default browser dropdown arrow */
+}
+
+select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+textarea {
+  resize: vertical;   /* user can resize vertically only */
+  min-height: 80px;
+}
+
+/* Row of tone/format chips */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Individual chip (pill-shaped button) */
+.chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+}
+
+/* Active/selected chip */
+.chip.active, .chip:hover {
+  background: rgba(124, 106, 255, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Big generate button */
+.gen-btn {
+  width: 100%;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, var(--accent), #9a8bff);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  padding: 0.9rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 20px rgba(124, 106, 255, 0.35);
+}
+
+.gen-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Output text box */
+.output-box {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 1.2rem;
+  min-height: 200px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text);
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+  white-space: pre-wrap; /* preserves line breaks */
+}
+
+/* Placeholder text inside output box */
+.output-placeholder { color: var(--muted); font-style: italic; }
+
+/* Row of action buttons */
+.output-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+
+.action-btn {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0.6rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'DM Mono', monospace;
+  text-align: center;
+}
+
+.action-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+
+/* ----------------------------------------------------------------
+   10. PROMPT LIBRARY SECTION
+---------------------------------------------------------------- */
+#library {
+  background: var(--surface);
+  padding: 6rem 2rem;
+}
+
+/* Filter button row */
+.filter-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin: 2rem 0 1.5rem;
+}
+
+.filter-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  transition: all 0.2s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  background: rgba(124, 106, 255, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Grid of prompt cards */
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+/* Individual prompt card */
+.prompt-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+
+.prompt-card:hover {
+  border-color: rgba(124, 106, 255, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Colored category tag on each card */
+.prompt-card-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  margin-bottom: 0.8rem;
+}
+
+/* Different color for each category */
+.tag-study    { background: rgba(106,255,212,0.1); color: var(--accent3); }
+.tag-career   { background: rgba(124,106,255,0.1); color: var(--accent); }
+.tag-creative { background: rgba(255,106,157,0.1); color: var(--accent2); }
+.tag-business { background: rgba(255,200,80,0.1);  color: #ffc850; }
+.tag-code     { background: rgba(124,106,255,0.1); color: var(--accent); }
+
+.prompt-card h4 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+}
+
+/* Truncated preview of prompt text */
+.prompt-card p {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-family: 'DM Mono', monospace;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* show max 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Copy button inside each card */
+.card-copy-btn {
+  margin-top: 1rem;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  padding: 0.45rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: all 0.2s;
+}
+
+.card-copy-btn:hover, .card-copy-btn.copied {
+  border-color: var(--accent3);
+  color: var(--accent3);
+}
+
+
+/* ----------------------------------------------------------------
+   11. SAVED PROMPTS SECTION
+---------------------------------------------------------------- */
+#saved {
+  background: var(--bg);
+  padding: 6rem 2rem;
+}
+
+.saved-list {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Row for each saved prompt */
+.saved-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.saved-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* Delete button */
+.saved-del {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.saved-del:hover { color: var(--accent2); }
+
+/* Empty state message */
+.empty-state {
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  padding: 2rem;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+
+/* ----------------------------------------------------------------
+   12. FUTURE SCOPE SECTION
+---------------------------------------------------------------- */
+#scope {
+  background: var(--surface);
+  padding: 6rem 2rem;
+}
+
+.scope-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-top: 3rem;
+}
+
+.scope-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.scope-card:hover {
+  border-color: rgba(124, 106, 255, 0.4);
+  transform: translateY(-4px);
+}
+
+.scope-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+
+.scope-card h4 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.scope-card p { color: var(--muted); font-size: 0.8rem; }
+
+/* Phase badge */
+.scope-badge {
+  display: inline-block;
+  margin-top: 0.7rem;
+  background: rgba(124, 106, 255, 0.1);
+  border: 1px solid rgba(124, 106, 255, 0.2);
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-family: 'DM Mono', monospace;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+}
+
+
+/* ----------------------------------------------------------------
+   13. FOOTER
+---------------------------------------------------------------- */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  background: linear-gradient(120deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
+footer p { margin-top: 0.3rem; }
+
+
+/* ----------------------------------------------------------------
+   14. TOAST NOTIFICATION
+   Pops up at bottom-right when user copies or saves a prompt.
+   JavaScript adds the "show" class to make it appear.
+---------------------------------------------------------------- */
+#toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-family: 'DM Mono', monospace;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}

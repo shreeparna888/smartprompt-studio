@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartPrompt Studio</title>
+
+  <!--
+    We are linking Google Fonts here.
+    Syne      = bold display headings
+    DM Mono   = code/monospace text
+    DM Sans   = clean body text
+    This line must go BEFORE your style.css link.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Link to your CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+       - Fixed to the top of the screen at all times
+       - Logo on the left, navigation links in the middle, buttons on right
+  ============================================================ -->
+  <nav>
+    <div class="logo">SmartPrompt <span>studio</span></div>
+
+    <ul class="nav-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#builder">Builder</a></li>
+      <li><a href="#library">Library</a></li>
+      <li><a href="#scope">Roadmap</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <!-- This button switches dark/light mode via JavaScript -->
+      <button id="themeToggle">☀ Light</button>
+
+      <!-- This button scrolls user to the builder section -->
+      <button class="nav-cta" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">
+        Try Builder →
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+       HERO SECTION
+       - The very first thing visitors see
+       - Has a badge, big heading, subtext, two buttons, and stats
+       - The orbs are decorative blurred circles (styled in CSS)
+  ============================================================ -->
+  <section id="hero">
+
+    <!-- Decorative background circles - purely visual -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- Small label at the top -->
+    <div class="badge">● v1.0 — Semester Innovation Project</div>
+
+    <!-- Main heading - split into two lines -->
+    <h1>
+      Craft Prompts <br />
+      <span class="gradient-text">That Actually Work.</span>
+    </h1>
+
+    <!-- Short description below heading -->
+    <p class="hero-sub">
+      SmartPrompt Studio helps you build, refine, and save AI prompts
+      for any use case — study, career, creativity, and beyond.
+    </p>
+
+    <!-- Two call-to-action buttons -->
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">
+        🚀 Open the Builder
+      </button>
+      <button class="btn-outline" onclick="document.getElementById('library').scrollIntoView({behavior:'smooth'})">
+        Browse Library
+      </button>
+    </div>
+
+    <!-- Three quick statistics -->
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Pre-built Prompts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Use Categories</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Possibilities</div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ============================================================
+       HOW IT WORKS SECTION
+       - 4 step cards explaining the process
+       - Cards are laid out in a grid
+  ============================================================ -->
+  <section id="how">
+    <div class="container">
+
+      <!-- Small label above the heading -->
+      <p class="section-tag">// process</p>
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">Three simple steps to go from a vague idea to a precision-crafted AI prompt.</p>
+
+      <!-- Grid of 4 step cards -->
+      <div class="steps-grid">
+
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon">🎯</div>
+          <h3>Pick Your Goal</h3>
+          <p>Choose a category, your target AI, and the tone you want — casual, professional, or creative.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon">⚡</div>
+          <h3>Generate Instantly</h3>
+          <p>The builder assembles a structured, optimised prompt using proven prompt-engineering patterns.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon">📋</div>
+          <h3>Copy & Save</h3>
+          <p>One-click copy to your clipboard or save it to your personal prompt library for later use.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-icon">🔁</div>
+          <h3>Iterate & Refine</h3>
+          <p>Tweak modifiers — add constraints, examples, or format rules to sharpen any output further.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PROMPT BUILDER SECTION
+       - Left panel  = form inputs (category, task, tone, format, AI)
+       - Right panel = output box + action buttons
+       - All the logic is handled in script.js
+  ============================================================ -->
+  <section id="builder">
+    <div class="container">
+
+      <p class="section-tag">// builder</p>
+      <h2 class="section-title">Prompt Builder</h2>
+      <p class="section-sub">Fill in the fields. Get a ready-to-paste AI prompt in seconds.</p>
+
+      <!-- Two-column layout -->
+      <div class="builder-wrap">
+
+        <!-- LEFT PANEL: Inputs -->
+        <div class="builder-panel">
+          <h3>⚙️ Configure Your Prompt</h3>
+
+          <!-- Dropdown: Category -->
+          <div class="form-group">
+            <label for="cat">CATEGORY</label>
+            <select id="cat">
+              <option value="">— Select Category —</option>
+              <option value="study">Study & Learning</option>
+              <option value="career">Career & Job Search</option>
+              <option value="creative">Creative Writing</option>
+              <option value="business">Business & Marketing</option>
+              <option value="code">Coding & Tech</option>
+            </select>
+          </div>
+
+          <!-- Textarea: Task description -->
+          <div class="form-group">
+            <label for="task">TASK DESCRIPTION</label>
+            <textarea id="task" placeholder="e.g. Explain neural networks simply, write a cover letter for software engineer role…"></textarea>
+          </div>
+
+          <!--
+            Tone chips - clickable pill buttons
+            The "active" class is added/removed by JavaScript
+            data-val stores the actual tone value used in prompt generation
+          -->
+          <div class="form-group">
+            <label>TONE</label>
+            <div class="chip-group" id="toneChips">
+              <div class="chip active" data-val="professional">Professional</div>
+              <div class="chip" data-val="casual">Casual</div>
+              <div class="chip" data-val="creative">Creative</div>
+              <div class="chip" data-val="academic">Academic</div>
+              <div class="chip" data-val="concise">Concise</div>
+            </div>
+          </div>
+
+          <!-- Format chips -->
+          <div class="form-group">
+            <label>OUTPUT FORMAT</label>
+            <div class="chip-group" id="formatChips">
+              <div class="chip active" data-val="paragraph">Paragraph</div>
+              <div class="chip" data-val="bullet points">Bullet Points</div>
+              <div class="chip" data-val="step-by-step">Step-by-Step</div>
+              <div class="chip" data-val="table">Table</div>
+            </div>
+          </div>
+
+          <!-- Dropdown: Target AI -->
+          <div class="form-group">
+            <label for="targetAI">TARGET AI</label>
+            <select id="targetAI">
+              <option value="ChatGPT">ChatGPT</option>
+              <option value="Claude">Claude</option>
+              <option value="Gemini">Gemini</option>
+              <option value="Any AI">Any AI</option>
+            </select>
+          </div>
+
+          <!-- Generate button — calls generatePrompt() in script.js -->
+          <button class="gen-btn" onclick="generatePrompt()">⚡ Generate Prompt</button>
+        </div>
+
+
+        <!-- RIGHT PANEL: Output -->
+        <div class="builder-panel">
+          <h3>📄 Your Generated Prompt</h3>
+
+          <!--
+            This box shows the generated prompt text.
+            JavaScript will write into this element.
+          -->
+          <div class="output-box" id="outputBox">
+            <span class="output-placeholder">Your crafted prompt will appear here…</span>
+          </div>
+
+          <!-- Action buttons below the output box -->
+          <div class="output-actions">
+            <button class="action-btn" id="copyBtn" onclick="copyPrompt()">📋 Copy</button>
+            <button class="action-btn" onclick="savePrompt()">💾 Save</button>
+            <button class="action-btn" onclick="clearOutput()">🗑 Clear</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PROMPT LIBRARY SECTION
+       - Filter buttons at the top (All, Study, Career, etc.)
+       - A grid of prompt cards below
+       - Both are built dynamically by JavaScript
+  ============================================================ -->
+  <section id="library">
+    <div class="container">
+
+      <p class="section-tag">// library</p>
+      <h2 class="section-title">Prompt Library</h2>
+      <p class="section-sub">Browse, copy and use 15+ pre-built expert prompts across every category.</p>
+
+      <!--
+        Filter buttons are injected here by JavaScript.
+        id="filterRow" is the target.
+      -->
+      <div class="filter-row" id="filterRow"></div>
+
+      <!--
+        Prompt cards are injected here by JavaScript.
+        id="libraryGrid" is the target.
+      -->
+      <div class="library-grid" id="libraryGrid"></div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SAVED PROMPTS SECTION
+       - List of prompts the user has saved using the builder
+       - Saved in localStorage (stays even after closing browser)
+       - Built dynamically by JavaScript
+  ============================================================ -->
+  <section id="saved">
+    <div class="container">
+
+      <p class="section-tag">// my prompts</p>
+      <h2 class="section-title">Saved Prompts</h2>
+      <p class="section-sub">Your personal prompt vault — saved locally in your browser.</p>
+
+      <!--
+        Saved prompt items are injected here by JavaScript.
+        id="savedList" is the target.
+      -->
+      <div class="saved-list" id="savedList"></div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FUTURE SCOPE / ROADMAP SECTION
+       - 6 cards showing what the project will become
+       - Great talking point for your viva / presentation
+  ============================================================ -->
+  <section id="scope">
+    <div class="container">
+
+      <p class="section-tag">// roadmap</p>
+      <h2 class="section-title">Future Scope</h2>
+      <p class="section-sub">SmartPrompt Studio is just getting started. Here's what's coming next.</p>
+
+      <div class="scope-grid">
+
+        <div class="scope-card">
+          <div class="scope-icon">🤖</div>
+          <h4>Live AI Testing</h4>
+          <p>Test prompts directly against ChatGPT / Gemini API without leaving the app.</p>
+          <span class="scope-badge">Phase 2</span>
+        </div>
+
+        <div class="scope-card">
+          <div class="scope-icon">📱</div>
+          <h4>Mobile App</h4>
+          <p>Flutter-based cross-platform app — take your prompt studio anywhere.</p>
+          <span class="scope-badge">Phase 3</span>
+        </div>
+
+        <div class="scope-card">
+          <div class="scope-icon">👥</div>
+          <h4>Community Sharing</h4>
+          <p>Share prompts publicly, vote on the best ones, build a collective knowledge base.</p>
+          <span class="scope-badge">Phase 3</span>
+        </div>
+
+        <div class="scope-card">
+          <div class="scope-icon">🧠</div>
+          <h4>AI Suggestions</h4>
+          <p>ML model that auto-suggests prompt improvements based on your goal.</p>
+          <span class="scope-badge">Phase 4</span>
+        </div>
+
+        <div class="scope-card">
+          <div class="scope-icon">💼</div>
+          <h4>Pro Tier</h4>
+          <p>Premium prompt packs, analytics, team workspaces for professionals.</p>
+          <span class="scope-badge">Phase 4</span>
+        </div>
+
+        <div class="scope-card">
+          <div class="scope-icon">🌐</div>
+          <h4>Browser Extension</h4>
+          <p>One-click prompt injection into any AI chat interface from your browser.</p>
+          <span class="scope-badge">Phase 5</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
+       - Simple closing section
+  ============================================================ -->
+  <footer>
+    <div class="footer-logo">SmartPrompt Studio</div>
+    <p>Built as a Semester Innovation Project · HTML / CSS / JavaScript</p>
+    <p>Designed & Developed with ❤️ — Future: AI API, mobile app, community platform</p>
+  </footer>
+
+
+  <!--
+    TOAST NOTIFICATION
+    - This small popup appears at the bottom right
+    - JavaScript adds class "show" to make it visible
+  -->
+  <div id="toast"></div>
+
+
+  <!-- Link to your JavaScript file — always at the BOTTOM of body -->
+  <script src="script.js"></script>
+
+</body>
+</html>
